@@ -13,9 +13,9 @@ UPDATE recipe SET notes_id = 1 WHERE id = 1;
 INSERT INTO notes (description, recipe_id) VALUES ('Good for breakfast', 2);
 UPDATE recipe SET notes_id = 2 WHERE id = 2;
 
-INSERT INTO category_recipes (categories_id, recipes_id) values (1, 1);
-INSERT INTO category_recipes (categories_id, recipes_id) values (4, 1);
-INSERT INTO category_recipes (categories_id, recipes_id) values (3, 2);
+INSERT INTO recipe_category (category_id, recipe_id) values (1, 1);
+INSERT INTO recipe_category (category_id, recipe_id) values (4, 1);
+INSERT INTO recipe_category (category_id, recipe_id) values (3, 2);
 
 INSERT INTO ingredient (description, amount, recipe_id) VALUES ('milk', '2.0', 1);
 INSERT INTO ingredient (description, amount, recipe_id) VALUES ('oatflakes', '1.0', 1);

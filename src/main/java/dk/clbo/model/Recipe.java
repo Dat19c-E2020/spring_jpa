@@ -7,12 +7,10 @@ import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 import javax.persistence.*;
 
+import java.util.HashSet;
 import java.util.Set;
 
-/* mapping fra request skal have id genereret - kan gøres med annotation
-@JsonIdentityInfo(
-        generator = ObjectIdGenerators.PropertyGenerator.class,
-        property = "id")*/
+
 @Entity
 public class Recipe {
 
@@ -45,9 +43,12 @@ public class Recipe {
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "recipe", orphanRemoval = true )
     private Set<Ingredient> ingredients;
 
-    @ManyToMany(mappedBy = "recipes", cascade = CascadeType.MERGE)
-    @JsonIgnore //ManagedReference virker kun med OneToMany/OneToOne
-    private Set<Category> categories;
+    @ManyToMany(cascade = CascadeType.ALL)
+    @JoinTable(name = "recipe_category",
+            joinColumns = @JoinColumn(name = "recipe_id"),
+            inverseJoinColumns = @JoinColumn(name = "category_id")
+    )
+    private Set<Category> categories = new HashSet<>();
 
     public Recipe(){}
 

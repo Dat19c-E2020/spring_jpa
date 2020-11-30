@@ -58,26 +58,39 @@ public class RestRecipeController {
     @PostMapping(value="/recipe", consumes={"application/json"})
     public ResponseEntity<String> create(@RequestBody Recipe r){
         Recipe _recipe = new Recipe(r.getDescription(), r.getPrepTime(), r.getCookTime(), r.getServings(), r.getSource(), r.getUrl(), r.getDirections(), r.getXxx());
+        //gem recipe, så der er et id tilknyttet til den nye opskrift
+        recipeRepository.save(_recipe);
+
         Notes _notes = new Notes(r.getNotes().getDescription(),_recipe);
         _recipe.setNotes(_notes);
-
+        notesRepository.save(_notes);
 
         Set<Ingredient> _ingredients = r.getIngredients();
         for (Ingredient ingredient : _ingredients){
             ingredient.setRecipe(_recipe);
-            //ingredientRepository.save(ingredient);
+            ingredientRepository.save(ingredient);
         }
         _recipe.setIngredients(_ingredients);
 
-/*
+        //category - kør igennem categories på ny recipe
+        //  find tilsvarende category i repository
+        //  opdater category med opskrift
         Set<Category> _categories = r.getCategories();
         for (Category category : _categories){
-            category.getRecipes().add(_recipe);
+            Optional<Category> optCategory = categoryRepository.findById(category.getId());
+            if (optCategory.isPresent()) {
+                Category cat = optCategory.get();
+                cat.getRecipes().add(_recipe);
+                categoryRepository.save(cat);
+            }
+            else
+            {
+                System.out.println("unknown category id");
+            }
         }
         _recipe.setCategories(_categories);
-*/
-        //notesRepository.save(_notes);
-        Recipe recipe = recipeRepository.save(_recipe);
+        //skal den gemmes igen?
+        recipeRepository.save(_recipe);
 
         return ResponseEntity.status(201).header("Location", "/recipe/" + r.getId()).body("{'Msg': 'post created'}");
     }
