@@ -58,7 +58,7 @@ public class RestRecipeController {
     @PostMapping(value="/recipe", consumes={"application/json"})
     public ResponseEntity<String> create(@RequestBody Recipe r){
         Recipe _recipe = new Recipe(r.getDescription(), r.getPrepTime(), r.getCookTime(), r.getServings(), r.getSource(), r.getUrl(), r.getDirections(), r.getXxx());
-        //gem recipe, så der er et id tilknyttet til den nye opskrift
+        //gem recipe, så der er et id tilknyttet til den nye opskrift til mapning i modsat regning
         recipeRepository.save(_recipe);
 
         Notes _notes = new Notes(r.getNotes().getDescription(),_recipe);
@@ -96,10 +96,16 @@ public class RestRecipeController {
     }
 
     // HTTP PUT, ie. update
-    @PutMapping("/recipe")
+    @PutMapping("/recipe/{id}")
     public ResponseEntity<String> update(@PathVariable("id") Long id, @RequestBody Recipe r){
         //get recipeById
-        //check og opdater category - fjern og tilføj
+        Optional<Recipe> optionalRecipe = recipeRepository.findById(id);
+        if (!optionalRecipe.isPresent()){
+            //Recipe id findes ikke
+            return ResponseEntity.status(404).body("{'msg':'Not found'");
+        }
+
+        //opdater category, ingredient og notes sker automatisk - nu er relationen oprettet
         //save recipe
         recipeRepository.save(r);
         return ResponseEntity.status(204).body("{'msg':'Updated'}");
