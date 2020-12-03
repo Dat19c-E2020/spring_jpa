@@ -10,10 +10,11 @@ import javax.persistence.*;
 import java.util.HashSet;
 import java.util.Set;
 
-
+//databaseklasse
 @Entity
 public class Recipe {
 
+    //primary key
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -35,6 +36,7 @@ public class Recipe {
         this.xxx = xxx;
     }
 
+    //Jackson skal kun følge referencen den ene vej
     @JsonManagedReference
     @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
     private Notes notes;
@@ -44,6 +46,7 @@ public class Recipe {
     private Set<Ingredient> ingredients;
 
     @ManyToMany(cascade = CascadeType.ALL)
+    //specificer jointabellen
     @JoinTable(name = "recipe_category",
             joinColumns = @JoinColumn(name = "recipe_id"),
             inverseJoinColumns = @JoinColumn(name = "category_id")

@@ -1,6 +1,6 @@
 package dk.clbo.controller;
 
-import com.sun.tools.javap.TypeAnnotationWriter;
+//import com.sun.tools.javap.TypeAnnotationWriter;
 import dk.clbo.model.Category;
 import dk.clbo.model.Ingredient;
 import dk.clbo.model.Notes;
@@ -34,7 +34,7 @@ public class RestRecipeController {
         this.categoryRepository = categoryRepository;
     }
 
-    // HTTP Get
+    // HTTP Get List
     @GetMapping("/recipe")
     public Iterable<Recipe> findAll(){
 

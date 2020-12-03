@@ -8,7 +8,6 @@ import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import javax.persistence.*;
 
 // entitetsklasse i jpa - tabel kan specificeres
-
 @Entity
 @Table(name = "notes")
 public class Notes {
@@ -21,7 +20,7 @@ public class Notes {
     @Column( name="description" )
 	private String description;
 
-    //FetchType Lazy og Eager - hente ved tilgang til eller straks
+    //FetchType Lazy og Eager - hente ved tilgang til eller straks, når parent hentes
 	@OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "recipe_id")
 
