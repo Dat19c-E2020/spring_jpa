@@ -61,8 +61,14 @@ public class RestRecipeController {
         //gem recipe, så der er et id tilknyttet til den nye opskrift til mapning i modsat regning
         recipeRepository.save(_recipe);
 
-        Notes _notes = new Notes(r.getNotes().getDescription(),_recipe);
-        _recipe.setNotes(_notes);
+        //new notes objekt
+//        Notes _notes = new Notes(r.getNotes().getDescription(),_recipe);
+//        _recipe.setNotes(_notes);
+//        notesRepository.save(_notes);
+
+        //brug af notes-objekt i r
+        Notes _notes=r.getNotes();
+        _notes.setRecipe(_recipe);
         notesRepository.save(_notes);
 
         Set<Ingredient> _ingredients = r.getIngredients();
